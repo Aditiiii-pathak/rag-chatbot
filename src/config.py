@@ -48,7 +48,11 @@ USE_SIMILARITY_SEARCH_BELOW_CHUNKS = 100  # Use simple similarity_search instead
 MAX_CONTEXT_CHUNKS = 3  # Max chunks sent to LLM (reduces context size and latency)
 
 # LLM settings
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+try:
+    import streamlit as st
+    GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", os.getenv("GEMINI_API_KEY", ""))
+except Exception:
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 GEMINI_MODEL_NAME = "gemini-2.5-flash"
 DEFAULT_LLM_TEMPERATURE = 0.2  # Low for deterministic FAQ-style answers
 DEFAULT_LLM_MAX_TOKENS = 768  # Enough for full FAQ answers (contact info, steps, etc.)
